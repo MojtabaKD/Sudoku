@@ -1,0 +1,68 @@
+﻿<Window x:Name="MainFM" x:Class="Sudoku.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Sudoku"
+        mc:Ignorable="d"
+        Title="Sudoku" Height="510" Width="645" HorizontalAlignment="Left" Left="0" Top="0" SnapsToDevicePixels="True" KeyDown="MainFM_KeyDown" ResizeMode="NoResize" MaxHeight="510">
+    <Grid Width="645" HorizontalAlignment="Center" SnapsToDevicePixels="False" Margin="0,0,0,-6" MaxWidth="645">
+        <Canvas x:Name="mainCanvas" Margin="20,35,426,82" MouseDown="mainCanvas_MouseDown" Loaded="mainCanvas_Loaded" HorizontalAlignment="Left" Width="365" Height="365"/>
+        <ListBox x:Name="listBox1" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="395,40,0,0" ScrollViewer.CanContentScroll="False" Height="180" Width="232" VerticalAlignment="Top" HorizontalAlignment="Left"/>
+        <Button x:Name="Solve_btn" Content="Solve it!" HorizontalAlignment="Left" Margin="395,275,0,0" VerticalAlignment="Top" Height="35" Width="110" Click="Solve_btn_Click" FontSize="22"/>
+        <Button x:Name="Create_btn" Content="Create" HorizontalAlignment="Left" Margin="395,230,0,0" VerticalAlignment="Top" Height="35" Width="110" FontSize="22" Click="Create_btn_Click"/>
+        <Canvas x:Name="ribbonCanvas" Margin="20,395,264,10" Height="50" Width="365"/>
+        <Menu x:Name="___No_Name_" Margin="0,0,0,436" Height="25" HorizontalAlignment="Left" Width="645" VerticalAlignment="Top">
+            <MenuItem x:Name="HelpItem" FontSize="16" Header="Help">
+                <MenuItem x:Name="AboutItem" FontSize="16" Header="About" Click="AboutItem_Click"></MenuItem>
+            </MenuItem>
+        </Menu>
+        <Button x:Name="Harder_btn" Content="Harder" HorizontalAlignment="Left" Margin="517,275,0,0" VerticalAlignment="Top" Height="35" Width="110" FontSize="22" Click="Harder_btn_Click"/>
+        <Button x:Name="Hardest_btn" Content="One of Hardests!" HorizontalAlignment="Left" Margin="395,320,0,0" VerticalAlignment="Top" Height="35" Width="230" FontSize="22" Click="Hardest_btn_Click"/>
+        <Button x:Name="Check_btn" Content="Check" HorizontalAlignment="Left" Margin="395,365,0,0" VerticalAlignment="Top" Height="35" Width="230" FontSize="22" Click="Check_btn_Click"/>
+        <CheckBox x:Name="Hint_cb" Content="Show Hint" HorizontalAlignment="Left" Margin="395,410,0,0" VerticalAlignment="Top" FontSize="16" IsChecked="True" Unchecked="Hint_cb_Unchecked" Checked="Hint_cb_Checked"/>
+        <Button x:Name="Undo_btn" HorizontalAlignment="Left" Margin="510,415,0,0" VerticalAlignment="Top" FontSize="20" Width="51" Height="51" Click="Undo_btn_Click">
+            <Button.Resources>
+                <DataTemplate x:Key="Unpressed">
+                    <Image Source="Resources/icons/undo-arrow-icon-blue.png"/>
+                </DataTemplate>
+                <DataTemplate x:Key="Pressed">
+                    <Image Source="Resources/icons/undo-arrow-icon-red.png"/>
+                </DataTemplate>
+            </Button.Resources>
+
+            <Button.Style>
+                <Style TargetType="{x:Type Button}">
+                    <Setter Property="ContentTemplate" Value="{StaticResource Unpressed}"/>
+                    <Style.Triggers>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter Property="ContentTemplate" Value="{StaticResource Pressed}"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </Button.Style>
+        </Button>
+        <Button x:Name="Redo_btn" Content="" HorizontalAlignment="Left" Margin="576,415,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.11,-0.006" FontSize="20" Width="51" Height="51" Click="Redo_btn_Click">
+            <Button.Resources>
+                <DataTemplate x:Key="Unpressed">
+                    <Image Source="Resources/icons/redo-arrow-icon-blue.png"/>
+                </DataTemplate>
+                <DataTemplate x:Key="Pressed">
+                    <Image Source="Resources/icons/redo-arrow-icon-red.png"/>
+                </DataTemplate>
+            </Button.Resources>
+
+            <Button.Style>
+                <Style TargetType="{x:Type Button}">
+                    <Setter Property="ContentTemplate" Value="{StaticResource Unpressed}"/>
+                    <Style.Triggers>
+                        <Trigger Property="IsPressed" Value="True">
+                            <Setter Property="ContentTemplate" Value="{StaticResource Pressed}"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </Button.Style>
+        </Button>
+        <Button x:Name="Clear_btn" Content="Clear" HorizontalAlignment="Left" Margin="517,230,0,0" VerticalAlignment="Top" Height="35" Width="110" FontSize="22" RenderTransformOrigin="0.628,0.518" Click="Clear_btn_Click"/>
+    </Grid>
+</Window>

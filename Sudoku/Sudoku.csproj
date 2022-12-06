@@ -1,0 +1,43 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net7.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <UseWPF>true</UseWPF>
+    <ApplicationIcon>Happy PePe.ico</ApplicationIcon>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="redo-arrow-icon-blue.png" />
+    <None Remove="redo-arrow-icon-red.png" />
+    <None Remove="redo-arrow-icon.png" />
+    <None Remove="Resources\icons\redo-arrow-icon-blue.png" />
+    <None Remove="Resources\icons\redo-arrow-icon-red.png" />
+    <None Remove="Resources\icons\undo-arrow-icon-blue.png" />
+    <None Remove="Resources\icons\undo-arrow-icon-red.png" />
+    <None Remove="undo-arrow-icon-red.png" />
+    <None Remove="undo-arrow-icon.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Happy PePe.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Happy PePe.png" />
+    <Resource Include="Resources\icons\redo-arrow-icon-blue.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\icons\redo-arrow-icon-red.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\icons\undo-arrow-icon-blue.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+    <Resource Include="Resources\icons\undo-arrow-icon-red.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+
+</Project>
