@@ -27,6 +27,7 @@ namespace Sudoku
         SudokuClass sudoku;
         SudokuClass.ON on;
         List<int[,]> Undo_Cache;
+        List<int> rib;
         int undo_ind;
         bool clear = false;
 
@@ -36,6 +37,8 @@ namespace Sudoku
             MainFM.WindowStartupLocation = WindowStartupLocation.CenterScreen;
             ShowMainLines();
             on.on = false;
+            on.i = 0;
+            on.j = 0;
             Undo_Cache = new List<int[,]>();
         }
 
@@ -69,19 +72,33 @@ namespace Sudoku
             mainCanvas.Background = Brushes.Transparent;
         }
 
-        private void ShowRibbon(int curr_i, int curr_j)
+        private void ribbonCanvas_Loaded(object sender, RoutedEventArgs e)
+        {
+            ribbonCanvas.Background = Brushes.Transparent;
+        }
+
+        private void ShowRibbon(int curr_i, int curr_j, List<int> rib_backup = null)
         {
             if ((sudoku != null) && (Hint_cb.IsChecked == true))
             {
-                if (sudoku.table[curr_i, curr_j] == 0)
+                if ((sudoku.table[curr_i, curr_j] == 0) || (rib_backup != null))
                 {
-                    ribbonCanvas.Children.Clear();
-
                     HashSet<int> digs = new HashSet<int>() { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
                     digs.ExceptWith(sudoku.UsedValues(sudoku.table, curr_i, curr_j));
-                    List<int> rem = new List<int>();
-                    rem.AddRange(digs);
-                    rem.Sort();
+
+                    if (rib_backup == null)
+                    {
+                        rib = new List<int>();
+                        rib.AddRange(digs);
+                        rib.Sort();
+                    }
+                    else
+                    {
+                        rib = rib_backup;
+                        digs = new HashSet<int>();
+                        digs.UnionWith(rib_backup);
+                    }
+                    
 
                     for (int i = 0; i < digs.Count(); i++)
                     {
@@ -89,7 +106,7 @@ namespace Sudoku
 
                         num = new TextBlock();
                         num.FontSize = 26;
-                        num.Text = rem[i].ToString();
+                        num.Text = rib[i].ToString();
 
                         Canvas.SetTop(num, 0);
                         Canvas.SetLeft(num, 40 * i + 10);
@@ -97,7 +114,7 @@ namespace Sudoku
                         ribbonCanvas.Children.Add(num);
                     }
 
-                    ShowRibLines(rem.Count());
+                    ShowRibLines(rib.Count());
                 }
             }
             else if (Hint_cb.IsChecked == false)
@@ -194,79 +211,139 @@ namespace Sudoku
             int sqr_y = sqr_i * 40 + 1;
 
             sqr.Points.Add(new System.Windows.Point(sqr_x, sqr_y));
-            sqr.Points.Add(new System.Windows.Point(sqr_x + 38, sqr_y));
-            sqr.Points.Add(new System.Windows.Point(sqr_x + 38, sqr_y + 38));
-            sqr.Points.Add(new System.Windows.Point(sqr_x, sqr_y + 38));
+            sqr.Points.Add(new System.Windows.Point(sqr_x + 39, sqr_y));
+            sqr.Points.Add(new System.Windows.Point(sqr_x + 39, sqr_y + 39));
+            sqr.Points.Add(new System.Windows.Point(sqr_x, sqr_y + 39));
 
             mainCanvas.Children.Add(sqr);
+        }
+
+        private void TurnRibSquareOn(int sqr_j, SolidColorBrush color)
+        {
+            System.Windows.Shapes.Polygon sqr = new System.Windows.Shapes.Polygon();
+            sqr.Fill = color;
+
+            int sqr_x = sqr_j * 40 + 1;
+
+            sqr.Points.Add(new System.Windows.Point(sqr_x, 1));
+            sqr.Points.Add(new System.Windows.Point(sqr_x + 39, 1));
+            sqr.Points.Add(new System.Windows.Point(sqr_x + 39, 39));
+            sqr.Points.Add(new System.Windows.Point(sqr_x, 39));
+
+            ribbonCanvas.Children.Add(sqr);
         }
 
         private void MainFM_KeyDown(object sender, KeyEventArgs e)
         {
             e.Handled = true;
 
-            if ((!on.on) && (sudoku != null) &&
+            if ((sudoku != null) &&
                 ((e.Key == Key.Up) || (e.Key == Key.Down) ||
                  (e.Key == Key.Left) || (e.Key == Key.Right)))
             {
-                for (int i = 0; i < 9; i++)
-                {
-                    for (int j = 0; j < 9; j++)
-                    {
-                        if ((!on.on) && (sudoku.table[i,j] == 0))
-                        {
-                            TurnSquareOn(i,j, System.Windows.Media.Brushes.Yellow);
-                            on.on = true;
-                            on.i = i;
-                            on.j = j;
-                        }
-                    }
-                }
-            }
-            else if ((on.on) && (sudoku != null) &&
-                    ((e.Key == Key.Up) || (e.Key == Key.Down) ||
-                     (e.Key == Key.Left) || (e.Key == Key.Right)))
-            {
-                int[] next_sqr;
-                SudokuClass.Next nxt = SudokuClass.Next.undefinded;
-
                 switch (e.Key)
                 {
                     case Key.Up:
                         {
-                            nxt = SudokuClass.Next.up;
+                            if (on.i > 0)
+                            {
+                                on.i--;
+                            }
+                            else
+                            {
+                                on.i = 8;
+
+                                if (on.j < 8)
+                                {
+                                    on.j++;
+                                }
+                                else
+                                {
+                                    on.j = 0;
+                                }
+                            }
                             break;
                         }
                     case Key.Down:
                         {
-                            nxt = SudokuClass.Next.down;
+                            if (on.i < 8)
+                            {
+                                on.i++;
+                            }
+                            else
+                            {
+                                on.i = 0;
+
+                                if (on.j < 8)
+                                {
+                                    on.j++;
+                                }
+                                else
+                                {
+                                    on.j = 0;
+                                }
+                            }
                             break;
                         }
                     case Key.Left:
                         {
-                            nxt = SudokuClass.Next.left;
+                            if (on.j > 0)
+                            {
+                                on.j--;
+                            }
+                            else
+                            {
+                                on.j = 8;
+
+                                if (on.i < 8)
+                                {
+                                    on.i++;
+                                }
+                                else
+                                {
+                                    on.i = 0;
+                                }
+                            }
                             break;
                         }
                     case Key.Right:
                         {
-                            nxt = SudokuClass.Next.right;
+                            if (on.j < 8)
+                            {
+                                on.j++;
+                            }
+                            else
+                            {
+                                on.j = 0;
+
+                                if (on.i < 8)
+                                {
+                                    on.i++;
+                                }
+                                else
+                                {
+                                    on.i = 0;
+                                }
+                            }
                             break;
                         }
                 }
 
-                if (nxt != SudokuClass.Next.undefinded)
+                mainCanvas.Children.Clear();
+
+                if (sudoku.table[on.i, on.j] == 0)
                 {
-                    next_sqr = sudoku.NextZero(nxt, on.i, on.j);
-                    if ((next_sqr[0] != 9) && (next_sqr[1] != 9))
-                    {
-                        mainCanvas.Children.Clear();
-                        TurnSquareOn(next_sqr[0], next_sqr[1], System.Windows.Media.Brushes.Yellow);
-                        ShowTable(sudoku.table);
-                        ShowRibbon(next_sqr[0], next_sqr[1]);
-                        on.i = next_sqr[0];
-                        on.j = next_sqr[1];
-                    }
+                    TurnSquareOn(on.i, on.j, System.Windows.Media.Brushes.Yellow);
+                    ribbonCanvas.Children.Clear();
+                    ShowRibbon(on.i, on.j);
                 }
+                else
+                {
+                    TurnSquareOn(on.i, on.j, System.Windows.Media.Brushes.LightGray);
+                    ribbonCanvas.Children.Clear();
+                }
+
+                ShowTable(sudoku.table);
             }
 
             int keynum;
@@ -314,42 +391,64 @@ namespace Sudoku
 
             if ((x <= 360) && (y <= 360) && (sudoku != null))
             {
-                if (sudoku != null)
+                if (sudoku.table[y / 40, x / 40] == 0)
                 {
-                    if (sudoku.table[y / 40, x / 40] == 0)
-                    {
-                        mainCanvas.Children.Clear();
-                        TurnSquareOn(y / 40, x / 40, System.Windows.Media.Brushes.Yellow);
-                        ShowTable(sudoku.table);
-                        on.on = true;
-                        on.i = y / 40;
-                        on.j = x / 40;
-                        ShowRibbon(y / 40, x / 40);
-                    }
-                    else if ((sudoku.table[y / 40, x / 40] != 0) && (clear))
-                    {
-                        sudoku.table[y / 40, x / 40] = 0;
-                        Undo_Redo(sudoku.table);
-                        mainCanvas.Children.Clear();
-                        ShowTable(sudoku.table);
-                    }
-                    else if ((sudoku.table[y / 40, x / 40] != 0) && (!clear))
-                    {
-                        mainCanvas.Children.Clear();
+                    mainCanvas.Children.Clear();
+                    TurnSquareOn(y / 40, x / 40, System.Windows.Media.Brushes.Yellow);
+                    ShowTable(sudoku.table);
+                    on.on = true;
+                    on.i = y / 40;
+                    on.j = x / 40;
+                    ribbonCanvas.Children.Clear();
+                    ShowRibbon(y / 40, x / 40);
+                }
+                else if ((sudoku.table[y / 40, x / 40] != 0) && (clear))
+                {
+                    sudoku.table[y / 40, x / 40] = 0;
+                    Undo_Redo(sudoku.table);
+                    mainCanvas.Children.Clear();
+                    ShowTable(sudoku.table);
+                }
+                else if ((sudoku.table[y / 40, x / 40] != 0) && (!clear))
+                {
+                    mainCanvas.Children.Clear();
 
-                        for (int i = 0; i < 9; i++)
+                    for (int i = 0; i < 9; i++)
+                    {
+                        for (int j = 0; j < 9; j++)
                         {
-                            for (int j = 0; j < 9; j++)
+                            if (sudoku.table[i, j] == sudoku.table[y / 40, x / 40])
                             {
-                                if (sudoku.table[i, j] == sudoku.table[y / 40, x / 40])
-                                {
-                                    TurnSquareOn(i, j, System.Windows.Media.Brushes.LawnGreen);
-                                }
+                                TurnSquareOn(i, j, System.Windows.Media.Brushes.LawnGreen);
                             }
                         }
-
-                        ShowTable(sudoku.table);
                     }
+
+                    ShowTable(sudoku.table);
+                    ribbonCanvas.Children.Clear();
+                }
+            }
+        }
+
+        private void ribbonCanvas_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            System.Windows.Point p = e.GetPosition(ribbonCanvas);
+
+            int x = (int)p.X;
+            int y = (int)p.Y;
+            
+            if ((rib.Count() > 0) && (sudoku != null))
+            {
+                if (x <= 40 * rib.Count())
+                {
+                    mainCanvas.Children.Clear();
+                    TurnSquareOn(on.i, on.j, System.Windows.Media.Brushes.Cyan);
+                    sudoku.table[on.i, on.j] = rib[x / 40];
+                    ShowTable(sudoku.table);
+
+                    ribbonCanvas.Children.Clear();
+                    TurnRibSquareOn(x / 40, System.Windows.Media.Brushes.Cyan);
+                    ShowRibbon(on.i, on.j, rib);
                 }
             }
         }
@@ -480,6 +579,7 @@ namespace Sudoku
         {
             if (on.on)
             {
+                ribbonCanvas.Children.Clear();
                 ShowRibbon(on.i, on.j);
             }
         }

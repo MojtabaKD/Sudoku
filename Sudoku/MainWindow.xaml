@@ -11,7 +11,7 @@
         <ListBox x:Name="listBox1" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="395,40,0,0" ScrollViewer.CanContentScroll="False" Height="180" Width="232" VerticalAlignment="Top" HorizontalAlignment="Left"/>
         <Button x:Name="Solve_btn" Content="Solve it!" HorizontalAlignment="Left" Margin="395,275,0,0" VerticalAlignment="Top" Height="35" Width="110" Click="Solve_btn_Click" FontSize="22"/>
         <Button x:Name="Create_btn" Content="Create" HorizontalAlignment="Left" Margin="395,230,0,0" VerticalAlignment="Top" Height="35" Width="110" FontSize="22" Click="Create_btn_Click"/>
-        <Canvas x:Name="ribbonCanvas" Margin="20,395,264,10" Height="50" Width="365"/>
+        <Canvas x:Name="ribbonCanvas" Margin="20,395,264,10" Height="50" Width="365" MouseDown="ribbonCanvas_MouseDown" Loaded="ribbonCanvas_Loaded"/>
         <Menu x:Name="___No_Name_" Margin="0,0,0,436" Height="25" HorizontalAlignment="Left" Width="645" VerticalAlignment="Top">
             <MenuItem x:Name="HelpItem" FontSize="16" Header="Help">
                 <MenuItem x:Name="AboutItem" FontSize="16" Header="About" Click="AboutItem_Click"></MenuItem>
