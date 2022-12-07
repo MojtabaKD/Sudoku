@@ -253,13 +253,13 @@ namespace Sudoku
                             {
                                 on.i = 8;
 
-                                if (on.j < 8)
+                                if (on.j > 0)
                                 {
-                                    on.j++;
+                                    on.j--;
                                 }
                                 else
                                 {
-                                    on.j = 0;
+                                    on.j = 8;
                                 }
                             }
                             break;
@@ -295,13 +295,13 @@ namespace Sudoku
                             {
                                 on.j = 8;
 
-                                if (on.i < 8)
+                                if (on.i > 0)
                                 {
-                                    on.i++;
+                                    on.i--;
                                 }
                                 else
                                 {
-                                    on.i = 0;
+                                    on.i = 8;
                                 }
                             }
                             break;
