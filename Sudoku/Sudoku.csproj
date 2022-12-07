@@ -5,7 +5,7 @@
     <TargetFramework>net7.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
-    <ApplicationIcon>Happy PePe.ico</ApplicationIcon>
+    <ApplicationIcon>Sudoku.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
@@ -21,7 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Content Include="Happy PePe.ico" />
+    <Content Include="Sudoku.ico" />
   </ItemGroup>
 
   <ItemGroup>
