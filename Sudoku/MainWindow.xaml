@@ -20,7 +20,7 @@
         <Button x:Name="Harder_btn" Content="Harder" HorizontalAlignment="Left" Margin="517,275,0,0" VerticalAlignment="Top" Height="35" Width="110" FontSize="22" Click="Harder_btn_Click"/>
         <Button x:Name="Hardest_btn" Content="One of Hardests!" HorizontalAlignment="Left" Margin="395,320,0,0" VerticalAlignment="Top" Height="35" Width="230" FontSize="22" Click="Hardest_btn_Click"/>
         <Button x:Name="Check_btn" Content="Check" HorizontalAlignment="Left" Margin="395,365,0,0" VerticalAlignment="Top" Height="35" Width="230" FontSize="22" Click="Check_btn_Click"/>
-        <CheckBox x:Name="Hint_cb" Content="Show Hint" HorizontalAlignment="Left" Margin="395,410,0,0" VerticalAlignment="Top" FontSize="16" IsChecked="True" Unchecked="Hint_cb_Unchecked" Checked="Hint_cb_Checked"/>
+        <CheckBox x:Name="Hint_cb" Content="Show hints" HorizontalAlignment="Left" Margin="395,410,0,0" VerticalAlignment="Top" FontSize="16" IsChecked="True" Unchecked="Hint_cb_Unchecked" Checked="Hint_cb_Checked"/>
         <Button x:Name="Undo_btn" HorizontalAlignment="Left" Margin="510,415,0,0" VerticalAlignment="Top" FontSize="20" Width="51" Height="51" Click="Undo_btn_Click">
             <Button.Resources>
                 <DataTemplate x:Key="Unpressed">

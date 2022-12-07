@@ -449,6 +449,11 @@ namespace Sudoku
                     ribbonCanvas.Children.Clear();
                     TurnRibSquareOn(x / 40, System.Windows.Media.Brushes.Cyan);
                     ShowRibbon(on.i, on.j, rib);
+
+                    if (!sudoku.Unfilled(sudoku.table))
+                    {
+                        Check_btn_Click(sender, e);
+                    }
                 }
             }
         }
