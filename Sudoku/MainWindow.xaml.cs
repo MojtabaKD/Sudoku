@@ -203,6 +203,8 @@ namespace Sudoku
 
         private void MainFM_KeyDown(object sender, KeyEventArgs e)
         {
+            e.Handled = true;
+
             if ((!on.on) && (sudoku != null) &&
                 ((e.Key == Key.Up) || (e.Key == Key.Down) ||
                  (e.Key == Key.Left) || (e.Key == Key.Right)))
