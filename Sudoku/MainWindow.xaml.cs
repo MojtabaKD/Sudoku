@@ -382,25 +382,28 @@ namespace Sudoku
 
         private void Solve_btn_Click(object sender, RoutedEventArgs e)
         {
-            int sol_tries = 0;
-
-            int[,] scn = new int[9, 9];
-
-            scn = sudoku.Scan_All(sudoku.table);
-
-            while (!SudokuClass.eq_tbls(scn, sudoku.table))
+            if (sudoku != null)
             {
-                Array.Copy(sudoku.Scan_All(sudoku.table), sudoku.table, 81);
-                sol_tries++;
-                mainCanvas.Children.Clear();
-                ShowTable(sudoku.table);
+                int sol_tries = 0;
+
+                int[,] scn = new int[9, 9];
+
                 scn = sudoku.Scan_All(sudoku.table);
+
+                while (!SudokuClass.eq_tbls(scn, sudoku.table))
+                {
+                    Array.Copy(sudoku.Scan_All(sudoku.table), sudoku.table, 81);
+                    sol_tries++;
+                    mainCanvas.Children.Clear();
+                    ShowTable(sudoku.table);
+                    scn = sudoku.Scan_All(sudoku.table);
+                }
+
+                Undo_Redo(scn);
+
+                listBox1.Items.Add($"{listBox1.Items.Count:D3}-Solution passes = {sol_tries}");
+                listBox1.ScrollIntoView(listBox1.Items[listBox1.Items.Count - 1]);
             }
-
-            Undo_Redo(scn);
-
-            listBox1.Items.Add($"{listBox1.Items.Count:D3}-Solution passes = {sol_tries}");
-            listBox1.ScrollIntoView(listBox1.Items[listBox1.Items.Count - 1]);
         }
 
         private void Hardest_btn_Click(object sender, RoutedEventArgs e)

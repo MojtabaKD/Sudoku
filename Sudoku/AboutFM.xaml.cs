@@ -29,7 +29,7 @@ namespace Sudoku
             FlowDocument flow = new FlowDocument();
 
             Paragraph par = new Paragraph();
-            par.Inlines.Add("Hi, this is a relatively simple Sudoko 1.0.2 game.");
+            par.Inlines.Add("Hi, this is a relatively simple Sudoko 1.0.3 game.");
             par.Inlines.Add(" You can find the source and binary(-ies) here:");
 
             Hyperlink link = new Hyperlink();
